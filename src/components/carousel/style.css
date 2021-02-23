@@ -1,0 +1,10 @@
+img {
+  width: 100%;
+}
+.carousel-content-wrapper {
+  overflow: hidden;
+}
+
+.carousel-content {
+  display: flex;
+}
