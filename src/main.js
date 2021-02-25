@@ -15,7 +15,7 @@ const Main = () => {
     getPosts();
   }, []);
   if (posts) {
-    return <App images={posts} />;
+    return <App posts={posts} />;
   } else {
     return <div>Loading</div>;
   }
