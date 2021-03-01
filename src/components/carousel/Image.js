@@ -1,33 +1,39 @@
 import React from "react";
 
-const Image = ({ items, activeIndex }) => {
+const Image = ({ activeIndex, windowWidth, movement, animation }) => {
   const visibleImage = 1;
-  const activeImages = [];
-  const images = items.map((item) => {
-    const { title } = item;
-    const image = item.postimage[0].formats.medium
-      ? item.postimage[0].formats.medium.url
-      : item.postimage[0].url;
-    return <img src={image} key={title}></img>;
-  });
-  /**Loading one before the one and one after */
-
-  for (let i = 0; i < visibleImage * 3; i++) {
-    let imageIndex;
-    if (activeIndex === 0 && i === 0) {
-      imageIndex = images.length - 1;
-    } else if (
-      activeIndex === images.length - 1 &&
-      i === visibleImage * 3 - 1
-    ) {
-      imageIndex = 0;
-    } else {
-      imageIndex = activeIndex + i - 1;
+  const items = ["red", "blue", "green", "yellow", "pink", "purple", "black"];
+  const middle = Math.floor(items.length / 2);
+  const middlePoint = activeIndex + middle;
+  const images = items.map((item, index) => {
+    let translate = 0;
+    let display;
+    if (index === activeIndex) {
+      translate = movement;
     }
-    activeImages.push(images[imageIndex]);
-  }
-  console.log("image generated");
-  return activeImages;
+    if (activeIndex === items.length - 1) {
+      translate = -(activeIndex - index) * windowWidth + movement;
+    } else if (index > activeIndex) {
+      translate = (index - activeIndex) * windowWidth + movement;
+    } else if (index < activeIndex) {
+      translate = -(activeIndex - index) * windowWidth + movement;
+    }
+    return (
+      <div
+        className={`carousel-element ${animation}`}
+        key={index}
+        style={{
+          width: windowWidth,
+          border: "solid 1px",
+          backgroundColor: `${item}`,
+          zIndex: "1",
+          transform: `translateX(${translate}px)`,
+          display: `${display}`,
+        }}
+      ></div>
+    );
+  });
+  return images;
 };
 
 export default Image;

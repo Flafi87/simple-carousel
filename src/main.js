@@ -3,22 +3,19 @@ import { render } from "react-dom";
 import App from "./components/App";
 
 const Main = () => {
-  const [posts, setPosts] = useState();
+  // const [posts, setPosts] = useState();
 
-  const getPosts = () => {
-    fetch("https://strapi.flafi.hu/posts")
-      .then((response) => response.json())
-      .then((data) => setPosts(data));
-  };
+  // const getPosts = () => {
+  //   fetch("https://strapi.flafi.hu/posts")
+  //     .then((response) => response.json())
+  //     .then((data) => setPosts(data));
+  // };
 
-  useEffect(() => {
-    getPosts();
-  }, []);
-  if (posts) {
-    return <App posts={posts} />;
-  } else {
-    return <div>Loading</div>;
-  }
+  // useEffect(() => {
+  //   getPosts();
+  // }, []);
+
+  return <App />;
 };
 
 render(<Main />, document.getElementById("root"));

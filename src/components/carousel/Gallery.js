@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./style.scss";
 import Image from "./Image";
-
-const Gallery = ({ posts }) => {
+const items = ["red", "blue", "green", "yellow", "pink", "purple", "black"];
+const Gallery = () => {
   const [windowWidth, setWindowWidth] = useState(0);
   const parentRef = useRef(null);
   const childrenRef = useRef(null);
@@ -11,65 +11,54 @@ const Gallery = ({ posts }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [touchPosition, setTouchPosition] = useState(null);
   const [touchDifference, setTouchDifference] = useState(null);
-  const [movement, setMovement] = useState();
-  const [animation, setAnimation] = useState(false);
+  const [movement, setMovement] = useState(0);
+  const [animation, setAnimation] = useState("");
   const [imigi, setImigi] = useState();
-  const [clientX, setClientX] = useState();
   const [mouseDown, setMouseDown] = useState(false);
   const visibleImage = 1;
-
+  let myStyle = {
+    transform: `translateX(${movement}px)`,
+  };
   useEffect(() => {
     setActiveIndex(0);
-  }, [posts]);
+  }, [items]);
 
   useEffect(() => {
     if (parentRef.current) {
       console.log("window effect ran");
       let parentWidth = parentRef.current.offsetWidth;
       setWindowWidth(parentWidth);
-      setMovement(-1 * parentWidth);
     }
   }, [parentRef]);
 
-  useEffect(() => {
-    const activeImages = Image({ items: posts, activeIndex });
-    setImigi(activeImages);
-  }, [activeIndex]);
-
-  let myStyle = {
-    transform: `translateX(${movement}px)`,
-  };
-
-  const endMovement = (index) => {
-    setAnimation(true);
-    setTouchDifference(0);
-    setTimeout(() => {
-      setActiveIndex(index);
-      setAnimation(false);
-      setMovement(-1 * windowWidth);
-    }, 500);
-  };
   const next = () => {
     // setAnimation(true);
-    const nextIndex = activeIndex === posts.length - 1 ? 0 : activeIndex + 1;
-    setMovement(-2 * windowWidth);
-    endMovement(nextIndex);
+    const nextIndex =
+      activeIndex === items.length - 1 ? activeIndex : activeIndex + 1;
+    setAnimation("animation");
+    setMovement(0);
+    setActiveIndex(nextIndex);
+  };
+  const jumpTo = (item) => {
+    setAnimation("animation-long");
+    setMovement(0);
+    setActiveIndex(item);
   };
   const previous = () => {
-    setAnimation(true);
-    const nextIndex = activeIndex === 0 ? posts.length - 1 : activeIndex - 1;
+    setAnimation("animation");
+    const nextIndex = activeIndex === 0 ? 0 : activeIndex - 1;
     setMovement(0);
-    endMovement(nextIndex);
+    setActiveIndex(nextIndex);
   };
   const stay = () => {
+    setAnimation("animation");
+    setMovement(0);
     setMouseDown(false);
     setAnimation(true);
-    setMovement(-1 * windowWidth);
-    endMovement(activeIndex);
   };
 
-  //   console.log(touchDifference);
   const handleTouchStart = (e) => {
+    setAnimation("");
     const touchDown = e.touches[0].clientX;
     setTouchPosition(touchDown);
   };
@@ -83,7 +72,7 @@ const Gallery = ({ posts }) => {
 
     const diff = touchPosition - currentTouch;
 
-    setMovement(-1 * diff - windowWidth);
+    setMovement(-1 * diff);
     setTouchDifference(diff);
   };
 
@@ -102,8 +91,10 @@ const Gallery = ({ posts }) => {
   };
 
   const handleMouseDown = (e) => {
+    setAnimation("");
     e.preventDefault();
     setTouchPosition(e.clientX);
+    console.log(e.clientX);
     setMouseDown(true);
   };
 
@@ -116,7 +107,7 @@ const Gallery = ({ posts }) => {
       }
       const diff = touchPosition - currentTouch;
 
-      setMovement(-1 * diff - windowWidth);
+      setMovement(-1 * diff);
       setTouchDifference(diff);
     }
   };
@@ -138,19 +129,23 @@ const Gallery = ({ posts }) => {
     }
     setMouseDown(false);
   };
-  let className = `carousel-content`;
-  if (animation) {
-    className += " animation";
-  }
 
-  const carouselContent = (
-    <div className={className} style={myStyle}>
-      {imigi}
-    </div>
-  );
+  const buttons = items.map((el, index) => {
+    const active = index === activeIndex ? "active" : "";
+    return (
+      <span
+        key={index}
+        onClick={() => {
+          jumpTo(index);
+        }}
+        className={`flying-button ${active}`}
+      ></span>
+    );
+  });
+
   return (
     <div className="carousel-component">
-      <div>
+      <div className="top-navigation">
         <button onClick={() => previous()} className="">
           Back
         </button>
@@ -169,7 +164,13 @@ const Gallery = ({ posts }) => {
         onMouseLeave={handleMouseUp}
         ref={parentRef}
       >
-        {carouselContent}
+        <Image
+          activeIndex={activeIndex}
+          windowWidth={windowWidth}
+          movement={movement}
+          animation={animation}
+        />
+        <div className="flying-buttons">{buttons}</div>
       </div>
     </div>
   );
