@@ -1,6 +1,6 @@
 import React from "react";
 
-const Image = ({
+const Slides = ({
   slidesArray,
   activeIndex,
   windowWidth,
@@ -26,6 +26,11 @@ const Image = ({
         className={`carousel-element ${animation}`}
         key={index}
         style={{
+          height: "100%",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          overflow: "hidden",
           backgroundColor,
           width: windowWidth,
           zIndex: "1",
@@ -40,4 +45,4 @@ const Image = ({
   return slides;
 };
 
-export default Image;
+export default Slides;

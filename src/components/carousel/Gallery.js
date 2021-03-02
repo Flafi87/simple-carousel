@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
-import "./style.scss";
-import Image from "./Image";
+import "./style.css";
+import Image from "./Slides";
 const Gallery = ({ slidesArray, settings }) => {
   const {
     width = "100%",
@@ -10,6 +10,9 @@ const Gallery = ({ slidesArray, settings }) => {
     dots = true,
     backgroundColor = "none",
     arrowColor = "black",
+    autoplay = false,
+    autoplaySpeed = 2000,
+    neverend = false,
   } = settings;
   const [windowWidth, setWindowWidth] = useState(0);
   const [dimensions, setDimensions] = useState({
@@ -17,6 +20,7 @@ const Gallery = ({ slidesArray, settings }) => {
     width: window.innerWidth,
   });
   const parentRef = useRef(null);
+  const [neverending, setNeverEnding] = useState(neverend);
   const [activeIndex, setActiveIndex] = useState(0);
   const [touchPosition, setTouchPosition] = useState(null);
   const [touchDifference, setTouchDifference] = useState(null);
@@ -24,7 +28,7 @@ const Gallery = ({ slidesArray, settings }) => {
   const [animation, setAnimation] = useState("");
   const [mouseDown, setMouseDown] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     function handleResize() {
       setDimensions({
         height: window.innerHeight,
@@ -34,7 +38,7 @@ const Gallery = ({ slidesArray, settings }) => {
 
     window.addEventListener("resize", handleResize);
 
-    return (_) => {
+    return () => {
       window.removeEventListener("resize", handleResize);
     };
   });
@@ -42,6 +46,16 @@ const Gallery = ({ slidesArray, settings }) => {
   useEffect(() => {
     setActiveIndex(0);
   }, [slidesArray]);
+
+  useEffect(() => {
+    if (autoplay) {
+      setNeverEnding(true);
+      const interval = setInterval(() => {
+        next();
+      }, autoplaySpeed);
+      return () => clearInterval(interval);
+    }
+  }, [activeIndex]);
 
   useEffect(() => {
     if (parentRef.current) {
@@ -53,7 +67,11 @@ const Gallery = ({ slidesArray, settings }) => {
   const next = () => {
     setAnimation("animation");
     const nextIndex =
-      activeIndex === slidesArray.length - 1 ? 0 : activeIndex + 1;
+      activeIndex === slidesArray.length - 1
+        ? neverending
+          ? 0
+          : activeIndex
+        : activeIndex + 1;
     setActiveIndex(nextIndex);
     setTouchDifference(0);
     setMovement(0);
@@ -68,7 +86,11 @@ const Gallery = ({ slidesArray, settings }) => {
     setAnimation("animation");
     setTouchDifference(0);
     const nextIndex =
-      activeIndex === 0 ? slidesArray.length - 1 : activeIndex - 1;
+      activeIndex === 0
+        ? neverending
+          ? slidesArray.length - 1
+          : activeIndex
+        : activeIndex - 1;
     setMovement(0);
     setActiveIndex(nextIndex);
   };
@@ -86,14 +108,11 @@ const Gallery = ({ slidesArray, settings }) => {
   };
 
   const handleTouchMove = (e) => {
-    // console.log(e);
     const currentTouch = e.touches[0].clientX;
     if (touchPosition === null) {
       return;
     }
-
     const diff = touchPosition - currentTouch;
-
     setMovement(-1 * diff);
     setTouchDifference(diff);
   };
@@ -127,7 +146,6 @@ const Gallery = ({ slidesArray, settings }) => {
         return;
       }
       const diff = touchPosition - currentTouch;
-
       setMovement(-1 * diff);
       setTouchDifference(diff);
     }
@@ -158,13 +176,25 @@ const Gallery = ({ slidesArray, settings }) => {
         onClick={() => {
           jumpTo(index);
         }}
-        className={`flying-button ${active}`}
+        className={`navigation-dot ${active}`}
       ></span>
     );
   });
 
   const navigation = (
-    <div className="carousel-navigation">
+    <div
+      className="carousel-navigation"
+      style={{
+        height: "30px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        position: "absolute",
+        bottom: "5%",
+        zIndex: "1",
+        width: "100%",
+      }}
+    >
       {arrow ? (
         <div className="arrow-block" onClick={() => previous()}>
           <span
@@ -180,7 +210,20 @@ const Gallery = ({ slidesArray, settings }) => {
           ></span>
         </div>
       ) : null}
-      {dots ? <div className="flying-buttons">{buttons}</div> : null}
+      {dots ? (
+        <div
+          className="navigation-dots"
+          style={{
+            height: "30px",
+            justifyContent: "center",
+            bottom: "5%",
+            zIndex: 1,
+            padding: "10px",
+          }}
+        >
+          {buttons}
+        </div>
+      ) : null}
       {arrow ? (
         <div className="arrow-block" onClick={() => next()}>
           <span
@@ -198,10 +241,11 @@ const Gallery = ({ slidesArray, settings }) => {
       ) : null}
     </div>
   );
-
   return (
-    <div style={{ width: width }} className="carousel-component">
-      <div className="top-navigation"></div>
+    <div
+      className="carousel-component"
+      style={{ width: width, overflow: "hidden", position: "relative" }}
+    >
       <div
         className="carousel-content-wrapper"
         onTouchStart={handleTouchStart}
@@ -212,7 +256,11 @@ const Gallery = ({ slidesArray, settings }) => {
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
         ref={parentRef}
-        style={{ height: height }}
+        style={{
+          height: height,
+          position: "relative",
+          margin: "10px 0px 0px 0px",
+        }}
       >
         <Image
           slidesArray={slidesArray}
@@ -239,5 +287,8 @@ Gallery.propTypes = {
     dots: PropTypes.boolean,
     backgroundColor: PropTypes.string,
     arrowColor: PropTypes.string,
+    autoplay: PropTypes.boolean,
+    autoplaySpeed: PropTypes.number,
+    neverend: PropTypes.boolean,
   }),
 };
