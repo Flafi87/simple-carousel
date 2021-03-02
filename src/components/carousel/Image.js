@@ -1,17 +1,20 @@
 import React from "react";
 
-const Image = ({ activeIndex, windowWidth, movement, animation }) => {
-  const visibleImage = 1;
-  const items = ["red", "blue", "green", "yellow", "pink", "purple", "black"];
-  const middle = Math.floor(items.length / 2);
-  const middlePoint = activeIndex + middle;
-  const images = items.map((item, index) => {
+const Image = ({
+  slidesArray,
+  activeIndex,
+  windowWidth,
+  movement,
+  animation,
+  backgroundColor,
+}) => {
+  const slides = slidesArray.map((slide, index) => {
     let translate = 0;
     let display;
     if (index === activeIndex) {
       translate = movement;
     }
-    if (activeIndex === items.length - 1) {
+    if (activeIndex === slidesArray.length - 1) {
       translate = -(activeIndex - index) * windowWidth + movement;
     } else if (index > activeIndex) {
       translate = (index - activeIndex) * windowWidth + movement;
@@ -23,17 +26,18 @@ const Image = ({ activeIndex, windowWidth, movement, animation }) => {
         className={`carousel-element ${animation}`}
         key={index}
         style={{
+          backgroundColor,
           width: windowWidth,
-          border: "solid 1px",
-          backgroundColor: `${item}`,
           zIndex: "1",
           transform: `translateX(${translate}px)`,
           display: `${display}`,
         }}
-      ></div>
+      >
+        {slide}
+      </div>
     );
   });
-  return images;
+  return slides;
 };
 
 export default Image;
