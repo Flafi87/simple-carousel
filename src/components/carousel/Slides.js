@@ -7,23 +7,33 @@ const Slides = ({
   movement,
   animation,
   backgroundColor,
+  animationLength,
+  slidesShown,
 }) => {
   const slides = slidesArray.map((slide, index) => {
     let translate = 0;
-    let display;
+    let calculatedWidth = windowWidth / slidesShown;
+    let transition = "";
     if (index === activeIndex) {
       translate = movement;
     }
-    if (activeIndex === slidesArray.length - 1) {
-      translate = -(activeIndex - index) * windowWidth + movement;
+    if (activeIndex === slidesArray.length - slidesShown) {
+      translate = -(activeIndex - index) * calculatedWidth + movement;
     } else if (index > activeIndex) {
-      translate = (index - activeIndex) * windowWidth + movement;
+      translate = (index - activeIndex) * calculatedWidth + movement;
     } else if (index < activeIndex) {
-      translate = -(activeIndex - index) * windowWidth + movement;
+      translate = -(activeIndex - index) * calculatedWidth + movement;
+    }
+    if (animation === "animation") {
+      transition = `all ${animationLength}ms cubic-bezier(0.4, 0, 0.2, 1) 0ms`;
+    } else if (animation === "animation-long") {
+      transition = `all ${
+        animationLength * slidesArray.length
+      }ms cubic-bezier(0.4, 0, 0.2, 1) 0ms`;
     }
     return (
       <div
-        className={`carousel-element ${animation}`}
+        className={`carousel-element`}
         key={index}
         style={{
           height: "100%",
@@ -32,10 +42,10 @@ const Slides = ({
           left: 0,
           overflow: "hidden",
           backgroundColor,
-          width: windowWidth,
+          width: calculatedWidth,
           zIndex: "1",
           transform: `translateX(${translate}px)`,
-          display: `${display}`,
+          transition: transition,
         }}
       >
         {slide}

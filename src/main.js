@@ -51,9 +51,11 @@ const Main = () => {
     dots: true,
     arrowColor: "#c1c7ce",
     backgroundColor: "",
+    animationLength: 400,
     autoplay: false,
     autoplaySpeed: 1000,
     neverend: false,
+    slidesShown: 1,
   };
 
   return <App slidesArray={posts} settings={settings} />;

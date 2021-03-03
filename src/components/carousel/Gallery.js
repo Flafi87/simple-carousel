@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import "./style.css";
 import Image from "./Slides";
+import Navigation from "./Navigation";
 const Gallery = ({ slidesArray, settings }) => {
   const {
     width = "100%",
@@ -9,11 +10,14 @@ const Gallery = ({ slidesArray, settings }) => {
     arrow = true,
     dots = true,
     backgroundColor = "none",
+    animationLength = 300,
     arrowColor = "black",
     autoplay = false,
     autoplaySpeed = 2000,
     neverend = false,
+    slidesShown = 1,
   } = settings;
+
   const [windowWidth, setWindowWidth] = useState(0);
   const [dimensions, setDimensions] = useState({
     height: window.innerHeight,
@@ -27,6 +31,7 @@ const Gallery = ({ slidesArray, settings }) => {
   const [movement, setMovement] = useState(0);
   const [animation, setAnimation] = useState("");
   const [mouseDown, setMouseDown] = useState(false);
+  const [maxIndex, setMaxIndex] = useState(slidesArray.length);
 
   useEffect(() => {
     function handleResize() {
@@ -44,6 +49,11 @@ const Gallery = ({ slidesArray, settings }) => {
   });
 
   useEffect(() => {
+    if (slidesArray.length % slidesShown !== 0) {
+      setMaxIndex(slidesArray.length - (slidesArray.length % slidesShown) - 1);
+    } else {
+      setMaxIndex(slidesArray.length - 1);
+    }
     setActiveIndex(0);
   }, [slidesArray]);
 
@@ -66,13 +76,22 @@ const Gallery = ({ slidesArray, settings }) => {
 
   const next = () => {
     setAnimation("animation");
-    const nextIndex =
-      activeIndex === slidesArray.length - 1
-        ? neverending
-          ? 0
-          : activeIndex
-        : activeIndex + 1;
-    setActiveIndex(nextIndex);
+    if (activeIndex === maxIndex - 1) {
+      if (neverending) {
+        setActiveIndex(0);
+      } else {
+        setActiveIndex(activeIndex);
+      }
+    } else {
+      const nextIndex =
+        activeIndex === slidesArray.length - 1
+          ? neverending
+            ? 0
+            : activeIndex
+          : activeIndex + 1;
+      setActiveIndex(nextIndex);
+    }
+
     setTouchDifference(0);
     setMovement(0);
   };
@@ -168,78 +187,18 @@ const Gallery = ({ slidesArray, settings }) => {
     setMouseDown(false);
   };
 
-  const buttons = slidesArray.map((el, index) => {
-    const active = index === activeIndex ? "active" : "";
-    return (
-      <span
-        key={index}
-        onClick={() => {
-          jumpTo(index);
-        }}
-        className={`navigation-dot ${active}`}
-      ></span>
-    );
-  });
-
   const navigation = (
-    <div
-      className="carousel-navigation"
-      style={{
-        height: "30px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        position: "absolute",
-        bottom: "5%",
-        zIndex: "1",
-        width: "100%",
-      }}
-    >
-      {arrow ? (
-        <div className="arrow-block" onClick={() => previous()}>
-          <span
-            className="arrow left"
-            style={{
-              border: `solid ${arrowColor}`,
-              borderWidth: "0 10px 10px 0",
-              display: "inline-block",
-              padding: "10px",
-              transform: "rotate(135deg)",
-              WebkitTransform: "rotate(135deg)",
-            }}
-          ></span>
-        </div>
-      ) : null}
-      {dots ? (
-        <div
-          className="navigation-dots"
-          style={{
-            height: "30px",
-            justifyContent: "center",
-            bottom: "5%",
-            zIndex: 1,
-            padding: "10px",
-          }}
-        >
-          {buttons}
-        </div>
-      ) : null}
-      {arrow ? (
-        <div className="arrow-block" onClick={() => next()}>
-          <span
-            className="arrow right"
-            style={{
-              border: `solid ${arrowColor}`,
-              borderWidth: "0 10px 10px 0",
-              display: "inline-block",
-              padding: "10px",
-              transform: "rotate(-45deg)",
-              WebkitTransform: "rotate(-45deg)",
-            }}
-          ></span>
-        </div>
-      ) : null}
-    </div>
+    <Navigation
+      slidesArray={slidesArray}
+      activeIndex={activeIndex}
+      maxIndex={maxIndex}
+      jumpTo={jumpTo}
+      arrow={arrow}
+      next={next}
+      previous={previous}
+      arrowColor={arrowColor}
+      dots={dots}
+    />
   );
   return (
     <div
@@ -269,6 +228,8 @@ const Gallery = ({ slidesArray, settings }) => {
           movement={movement}
           animation={animation}
           backgroundColor={backgroundColor}
+          animationLength={animationLength}
+          slidesShown={slidesShown}
         />
         {navigation}
       </div>
@@ -283,12 +244,14 @@ Gallery.propTypes = {
   settings: PropTypes.shape({
     width: PropTypes.string,
     height: PropTypes.string,
-    arrow: PropTypes.boolean,
-    dots: PropTypes.boolean,
+    arrow: PropTypes.bool,
+    dots: PropTypes.bool,
     backgroundColor: PropTypes.string,
+    animationLength: PropTypes.number,
     arrowColor: PropTypes.string,
-    autoplay: PropTypes.boolean,
+    autoplay: PropTypes.bool,
     autoplaySpeed: PropTypes.number,
-    neverend: PropTypes.boolean,
+    neverend: PropTypes.bool,
+    slidesShown: PropTypes.number,
   }),
 };
