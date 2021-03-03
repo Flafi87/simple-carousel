@@ -3,17 +3,20 @@ import PropTypes from "prop-types";
 import "./style.css";
 import Image from "./Slides";
 import Navigation from "./Navigation";
+import Empty from "./Empty";
 const Gallery = ({ slidesArray, settings }) => {
   const {
     width = "100%",
-    height = "400px",
+    height = "600px",
     arrow = true,
     dots = true,
-    backgroundColor = "none",
+    backgroundColor,
+    transitionType = "linear",
     animationLength = 300,
+    scrollingBackSpeed = 2000,
     arrowColor = "black",
     autoplay = false,
-    autoplaySpeed = 2000,
+    autoplaySpeed = 3000,
     neverend = false,
     slidesShown = 1,
   } = settings;
@@ -31,7 +34,7 @@ const Gallery = ({ slidesArray, settings }) => {
   const [movement, setMovement] = useState(0);
   const [animation, setAnimation] = useState("");
   const [mouseDown, setMouseDown] = useState(false);
-  const [maxIndex, setMaxIndex] = useState(slidesArray.length);
+  const [maxIndex, setMaxIndex] = useState(slidesArray.length - 1);
 
   useEffect(() => {
     function handleResize() {
@@ -75,16 +78,17 @@ const Gallery = ({ slidesArray, settings }) => {
   }, [dimensions.width]);
 
   const next = () => {
-    setAnimation("animation");
-    if (activeIndex === maxIndex - 1) {
+    if (activeIndex === maxIndex) {
       if (neverending) {
-        setActiveIndex(0);
+        jumpTo(0);
       } else {
+        setAnimation("animation");
         setActiveIndex(activeIndex);
       }
     } else {
+      setAnimation("animation");
       const nextIndex =
-        activeIndex === slidesArray.length - 1
+        activeIndex === maxIndex
           ? neverending
             ? 0
             : activeIndex
@@ -203,7 +207,11 @@ const Gallery = ({ slidesArray, settings }) => {
   return (
     <div
       className="carousel-component"
-      style={{ width: width, overflow: "hidden", position: "relative" }}
+      style={{
+        width: width,
+        overflow: "hidden",
+        position: "relative",
+      }}
     >
       <div
         className="carousel-content-wrapper"
@@ -226,9 +234,11 @@ const Gallery = ({ slidesArray, settings }) => {
           activeIndex={activeIndex}
           windowWidth={windowWidth}
           movement={movement}
-          animation={animation}
           backgroundColor={backgroundColor}
+          animation={animation}
+          transitionType={transitionType}
           animationLength={animationLength}
+          scrollingBackSpeed={scrollingBackSpeed}
           slidesShown={slidesShown}
         />
         {navigation}
@@ -237,7 +247,24 @@ const Gallery = ({ slidesArray, settings }) => {
   );
 };
 
-export default Gallery;
+Gallery.defaultProps = {
+  settings: {
+    width: "100%",
+    height: "600px",
+    arrow: true,
+    dots: true,
+    backgroundColor: "none",
+    transitionType: "linear",
+    animationLength: 1,
+    scrollingBackSpeed: 2,
+    arrowColor: "black",
+    autoplay: false,
+    autoplaySpeed: 3000,
+    neverend: false,
+    slidesShown: 1,
+  },
+  slidesArray: [<Empty />, <Empty />],
+};
 
 Gallery.propTypes = {
   slidesArray: PropTypes.arrayOf(PropTypes.element),
@@ -247,7 +274,9 @@ Gallery.propTypes = {
     arrow: PropTypes.bool,
     dots: PropTypes.bool,
     backgroundColor: PropTypes.string,
+    transitionType: PropTypes.string,
     animationLength: PropTypes.number,
+    scrollingBackSpeed: PropTypes.number,
     arrowColor: PropTypes.string,
     autoplay: PropTypes.bool,
     autoplaySpeed: PropTypes.number,
@@ -255,3 +284,5 @@ Gallery.propTypes = {
     slidesShown: PropTypes.number,
   }),
 };
+
+export default Gallery;

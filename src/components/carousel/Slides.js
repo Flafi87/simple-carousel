@@ -7,7 +7,9 @@ const Slides = ({
   movement,
   animation,
   backgroundColor,
+  transitionType,
   animationLength,
+  scrollingBackSpeed,
   slidesShown,
 }) => {
   const slides = slidesArray.map((slide, index) => {
@@ -25,11 +27,9 @@ const Slides = ({
       translate = -(activeIndex - index) * calculatedWidth + movement;
     }
     if (animation === "animation") {
-      transition = `all ${animationLength}ms cubic-bezier(0.4, 0, 0.2, 1) 0ms`;
+      transition = `all ${animationLength}ms ${transitionType}`;
     } else if (animation === "animation-long") {
-      transition = `all ${
-        animationLength * slidesArray.length
-      }ms cubic-bezier(0.4, 0, 0.2, 1) 0ms`;
+      transition = `all ${scrollingBackSpeed}ms ${transitionType}`;
     }
     return (
       <div

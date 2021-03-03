@@ -13,7 +13,7 @@ const Navigation = ({
 }) => {
   const buttons = slidesArray.map((el, index) => {
     const active = index === activeIndex ? "active" : "";
-    if (index < maxIndex) {
+    if (index <= maxIndex) {
       return (
         <span
           key={index}

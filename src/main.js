@@ -16,7 +16,7 @@ const Main = () => {
       key="text"
     >
       <h1 style={{ textAlign: "center", position: "absolute", top: "40%" }}>
-        Hello World! this is a demo carousel
+        Hello World! This is a demo carousel
       </h1>
     </div>,
     <img
@@ -47,15 +47,13 @@ const Main = () => {
   const settings = {
     width: "100%",
     height: "600px",
-    arrow: true,
-    dots: true,
-    arrowColor: "#c1c7ce",
-    backgroundColor: "",
-    animationLength: 400,
-    autoplay: false,
-    autoplaySpeed: 1000,
+    animationLength: 300,
+    scrollingBackSpeed: 2000,
+    autoplay: true,
+    autoplaySpeed: 2000,
     neverend: false,
     slidesShown: 1,
+    transitionType: "cubic-bezier(0.4, 0, 0.2, 1) 0ms",
   };
 
   return <App slidesArray={posts} settings={settings} />;
