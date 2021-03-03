@@ -12,7 +12,7 @@ const Navigation = ({
   dots,
 }) => {
   const buttons = slidesArray.map((el, index) => {
-    const active = index === activeIndex ? "active" : "";
+    const active = index === activeIndex ? "#3e3c3c" : "#d0c3c3";
     if (index <= maxIndex) {
       return (
         <span
@@ -21,6 +21,16 @@ const Navigation = ({
             jumpTo(index);
           }}
           className={`navigation-dot ${active}`}
+          style={{
+            height: "10px",
+            width: "10px",
+            backgroundColor: `${active}`,
+            borderRadius: "50%",
+            display: "inline-block",
+            margin: "5px",
+            boxShadow: "1px 1px 1px #868282",
+            opacity: "0.8",
+          }}
         ></span>
       );
     }

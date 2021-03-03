@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React from "react";
 import { render } from "react-dom";
-import App from "./components/App";
+import Carousel from "./";
 
 const Main = () => {
   const posts = [
@@ -50,13 +50,13 @@ const Main = () => {
     animationLength: 300,
     scrollingBackSpeed: 2000,
     autoplay: true,
-    autoplaySpeed: 2000,
+    autoplaySpeed: 3000,
     neverend: false,
     slidesShown: 1,
     transitionType: "cubic-bezier(0.4, 0, 0.2, 1) 0ms",
   };
 
-  return <App slidesArray={posts} settings={settings} />;
+  return <Carousel slidesArray={posts} settings={settings} />;
 };
 
 render(<Main />, document.getElementById("root"));

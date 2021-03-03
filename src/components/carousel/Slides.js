@@ -31,9 +31,10 @@ const Slides = ({
     } else if (animation === "animation-long") {
       transition = `all ${scrollingBackSpeed}ms ${transitionType}`;
     }
+
     return (
       <div
-        className={`carousel-element`}
+        className="carousel-element"
         key={index}
         style={{
           height: "100%",

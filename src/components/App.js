@@ -1,6 +1,6 @@
 import React from "react";
-import Gallery from "./carousel/Gallery";
+import Carousel from "./carousel/Carousel";
 
 export default function App(props) {
-  return <Gallery {...props} />;
+  return <Carousel {...props} />;
 }

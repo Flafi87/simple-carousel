@@ -4,9 +4,8 @@ import "./style.css";
 import Image from "./Slides";
 import Navigation from "./Navigation";
 import Empty from "./Empty";
-const Gallery = ({ slidesArray, settings }) => {
+const Carousel = ({ slidesArray, settings }) => {
   const {
-    width = "100%",
     height = "600px",
     arrow = true,
     dots = true,
@@ -208,7 +207,7 @@ const Gallery = ({ slidesArray, settings }) => {
     <div
       className="carousel-component"
       style={{
-        width: width,
+        width: "100%",
         overflow: "hidden",
         position: "relative",
       }}
@@ -247,7 +246,7 @@ const Gallery = ({ slidesArray, settings }) => {
   );
 };
 
-Gallery.defaultProps = {
+Carousel.defaultProps = {
   settings: {
     width: "100%",
     height: "600px",
@@ -266,7 +265,7 @@ Gallery.defaultProps = {
   slidesArray: [<Empty />, <Empty />],
 };
 
-Gallery.propTypes = {
+Carousel.propTypes = {
   slidesArray: PropTypes.arrayOf(PropTypes.element),
   settings: PropTypes.shape({
     width: PropTypes.string,
@@ -285,4 +284,4 @@ Gallery.propTypes = {
   }),
 };
 
-export default Gallery;
+export default Carousel;
