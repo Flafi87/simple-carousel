@@ -109,14 +109,15 @@ const Carousel = ({ slidesArray, settings, onResize }) => {
   const previous = () => {
     setAnimation("animation");
     setTouchDifference(0);
-    const nextIndex =
-      activeIndex === 0
-        ? neverending
-          ? slidesArray.length - 1
-          : activeIndex
-        : activeIndex - 1;
     setMovement(0);
-    setActiveIndex(nextIndex);
+    if (activeIndex === 0 && neverending) {
+      setAnimation("animation-long");
+      setActiveIndex(slidesArray.length - 1);
+    } else if (activeIndex === 0) {
+      setActiveIndex(activeIndex);
+    } else {
+      setActiveIndex(activeIndex - 1);
+    }
   };
   const stay = () => {
     setAnimation("animation");

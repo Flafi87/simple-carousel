@@ -49,9 +49,9 @@ const Main = () => {
     height: "600px",
     animationLength: 300,
     scrollingBackSpeed: 2000,
-    autoplay: true,
+    autoplay: false,
     autoplaySpeed: 3000,
-    neverend: false,
+    neverend: true,
     slidesShown: 1,
     transitionType: "cubic-bezier(0.4, 0, 0.2, 1) 0ms",
   };
