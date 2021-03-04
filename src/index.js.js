@@ -47,7 +47,7 @@ const Main = () => {
   const settings = {
     width: "100%",
     height: "600px",
-    animationLength: 300,
+    animationLength: 500,
     scrollingBackSpeed: 2000,
     autoplay: false,
     autoplaySpeed: 3000,
