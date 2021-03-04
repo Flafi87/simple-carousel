@@ -1,8 +1,8 @@
 # Simple Multipurpose Carousel
-`<Carousel slidesArray={[]} settings={{}} />`
+`<Carousel slidesArray={[]} settings={{}} onResize=()=>{} />`
 
 ## How to use it?
-Simply copy the 
+Usable component is in src/Carousel
 
 The component accepts an array of elements in props.
 Prop name is slidesArray
@@ -26,4 +26,5 @@ The component also accepts an object with settings
 - neverend = false(boolean) -- End of the slides it can roll back to the first slide, **!!during autoplay it is turned on automatically!!**
 - slidesShown = 1(number) -- How many slides should be visible at once
 
-## Advice:
+To be able to serve correct size of images for phones and monitors there is also an onResize prop which is a callBack on Size change, Returning an object with width and height
+`{ width: , height: }`
