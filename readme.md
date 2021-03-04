@@ -2,6 +2,7 @@
 `<Carousel slidesArray={[]} settings={{}} onResize=()=>{} />`
 
 ## How to use it?
+Usable component is in src/Carousel
 
 The component accepts an array of elements in props.
 Prop name is slidesArray
