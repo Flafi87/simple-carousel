@@ -1,7 +1,7 @@
 import React from "react";
 import renderer from "react-test-renderer";
 
-import Carousel from "./";
+import Carousel from "./Carousel/";
 
 it("renders correctly when there are nothing", () => {
   const tree = renderer.create(<Carousel />).toJSON();

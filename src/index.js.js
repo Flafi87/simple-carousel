@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React from "react";
 import { render } from "react-dom";
-import Carousel from "./";
+import Carousel from "./Carousel";
 
 const Main = () => {
   const posts = [
@@ -55,6 +55,7 @@ const Main = () => {
     slidesShown: 1,
     transitionType: "cubic-bezier(0.4, 0, 0.2, 1) 0ms",
   };
+  const onResize = (props) => console.log(props);
 
   return <Carousel slidesArray={posts} settings={settings} />;
 };

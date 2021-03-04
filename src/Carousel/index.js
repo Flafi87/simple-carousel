@@ -4,7 +4,8 @@ import "./style.css";
 import Image from "./Slides";
 import Navigation from "./Navigation";
 import Empty from "./Empty";
-const Carousel = ({ slidesArray, settings }) => {
+
+const Carousel = ({ slidesArray, settings, onResize }) => {
   const {
     height = "600px",
     arrow = true,
@@ -70,11 +71,12 @@ const Carousel = ({ slidesArray, settings }) => {
   }, [activeIndex]);
 
   useEffect(() => {
+    onResize({ width: dimensions.width, height: dimensions.height });
     if (parentRef.current) {
       const parentWidth = parentRef.current.offsetWidth;
       setWindowWidth(parentWidth);
     }
-  }, [dimensions.width]);
+  }, [dimensions.width, dimensions.height]);
 
   const next = () => {
     if (activeIndex === maxIndex) {
@@ -263,6 +265,7 @@ Carousel.defaultProps = {
     slidesShown: 1,
   },
   slidesArray: [<Empty />, <Empty />],
+  onResize: () => {},
 };
 
 Carousel.propTypes = {
@@ -282,6 +285,7 @@ Carousel.propTypes = {
     neverend: PropTypes.bool,
     slidesShown: PropTypes.number,
   }),
+  onResize: PropTypes.func,
 };
 
 export default Carousel;
