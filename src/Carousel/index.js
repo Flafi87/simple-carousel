@@ -88,13 +88,7 @@ const Carousel = ({ slidesArray, settings, onResize }) => {
       }
     } else {
       setAnimation("animation");
-      const nextIndex =
-        activeIndex === maxIndex
-          ? neverending
-            ? 0
-            : activeIndex
-          : activeIndex + 1;
-      setActiveIndex(nextIndex);
+      setActiveIndex(activeIndex + 1);
     }
 
     setTouchDifference(0);
@@ -111,8 +105,7 @@ const Carousel = ({ slidesArray, settings, onResize }) => {
     setTouchDifference(0);
     setMovement(0);
     if (activeIndex === 0 && neverending) {
-      setAnimation("animation-long");
-      setActiveIndex(slidesArray.length - 1);
+      jumpTo(slidesArray.length - 1);
     } else if (activeIndex === 0) {
       setActiveIndex(activeIndex);
     } else {
