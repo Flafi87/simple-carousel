@@ -24,25 +24,25 @@ const Main = () => {
       key="test1"
     ></img>,
     <img
-      src="https://storage.googleapis.com/strapi_bucket87/large_DSC_04530_392a7c3ea1/large_DSC_04530_392a7c3ea1.jpg"
+      src="https://storage.googleapis.com/strapi_bucket87/medium_IMG_20210224_154935_9bf019692b/medium_IMG_20210224_154935_9bf019692b.jpg"
       key="test2"
     ></img>,
     <img
-      src="https://storage.googleapis.com/strapi_bucket87/large_IMG_20210213_142551_381f68f7ab/large_IMG_20210213_142551_381f68f7ab.jpg"
+      src="https://storage.googleapis.com/strapi_bucket87/medium_IMG_20210222_224443_180d2083cd/medium_IMG_20210222_224443_180d2083cd.jpg"
       key="test3"
     ></img>,
     <img
-      src="https://storage.googleapis.com/strapi_bucket87/large_DSC_03910_4f877b8d42/large_DSC_03910_4f877b8d42.jpg"
+      src="https://storage.googleapis.com/strapi_bucket87/medium_IMG_20210221_105438_dddb48f651/medium_IMG_20210221_105438_dddb48f651.jpg"
       key="test4"
     ></img>,
     <img
-      src="https://storage.googleapis.com/strapi_bucket87/large_DSC_04530_392a7c3ea1/large_DSC_04530_392a7c3ea1.jpg"
+      src="https://storage.googleapis.com/strapi_bucket87/medium_IMG_20210213_142551_381f68f7ab/medium_IMG_20210213_142551_381f68f7ab.jpg"
       key="test5"
     ></img>,
-    <img
-      src="https://storage.googleapis.com/strapi_bucket87/large_IMG_20210213_142551_381f68f7ab/large_IMG_20210213_142551_381f68f7ab.jpg"
-      key="test6"
-    ></img>,
+    // <img
+    //   src="https://storage.googleapis.com/strapi_bucket87/large_IMG_20210213_142551_381f68f7ab/large_IMG_20210213_142551_381f68f7ab.jpg"
+    //   key="test6"
+    // ></img>,
   ];
   const settings = {
     width: "100%",
